@@ -1,10 +1,11 @@
-import {IConfig, IUser} from "./types";
+import {IConfig} from "./types";
 
 const express = require('express');
 const mysql = require('mysql');
 import { Request, Response } from 'express'
 import * as path from "path"
 import * as dotenv from "dotenv"
+import {IUser, User} from "./models/user.model";
 
 
 const app = express()
@@ -48,7 +49,24 @@ app.get('/users', (req: Request, res: Response) => {
             console.log(err)
             throw  err
         }
-        res.json(results)
+
+        if (!results) {
+            return console.log("results is empty")
+        }
+
+        const users:IUser[] = results.map(user =>
+            new User(
+                user.id,
+                user.username,
+                user.password,
+                user.name,
+                user.surname,
+                user.phone_number,
+                user.email_address
+            )
+        )
+        console.log(users)
+        res.json(users)
     })
 })
 
