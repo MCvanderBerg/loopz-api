@@ -1,0 +1,32 @@
+{
+  "name": "loopz-api",
+  "version": "1.0.0",
+  "description": "This is the api for the app loopz. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api-dev": "nodemon app.ts dev",
+    "api-qa": "nodemon app.ts qa",
+    "api-stag": "nodemon app.ts stag",
+    "api-prod": "nodemon app.ts prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MCvanderBerg/loopz-api.git"
+  },
+  "author": "MC_vanderBerg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MCvanderBerg/loopz-api/issues"
+  },
+  "homepage": "https://github.com/MCvanderBerg/loopz-api#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  }
+}
