@@ -34,4 +34,20 @@ export class User implements  IUser{
         this.phone_number = phone_number
         this.email_address = email_address
     }
+    static getUserProperties(): string[] {
+        return ['username', 'password', 'name', 'surname', 'phone_number', 'email_address'];
+    }
+    static validateAsUser(props: Object):[boolean, string | null] {
+        const requiredFields = this.getUserProperties()
+        const propKeys = Object.keys(props)
+
+        for (const field of requiredFields){
+            console.log(field, requiredFields)
+            if (!propKeys.includes(field)) {
+                return [false, field]
+            }
+        }
+
+        return [true,null]
+    }
 }
