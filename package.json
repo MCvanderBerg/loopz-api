@@ -2,7 +2,7 @@
   "name": "loopz-api",
   "version": "1.0.0",
   "description": "This is the api for the app loopz. ",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "api-dev": "nodemon app.ts dev",
