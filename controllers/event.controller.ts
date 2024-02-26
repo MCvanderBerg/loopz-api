@@ -87,7 +87,7 @@ export const getBriefEvents = (req: Request, res: Response) => {
 
     db.query(query,(err: Error, result: briefEvent[]) => {
         if (err) {
-            return res.status(500).json({ error: 'Internal server error' })
+            return res.status(400).json({ error: 'Internal server error' })
         }
 
         if (!result) {
