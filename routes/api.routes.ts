@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {getAllUsers, getUser, postUser} from "../controllers/user.controller";
+import {getUsers, getUser, postUser} from "../controllers/user.controller";
 import {getEvent, getEvents, postEvent} from "../controllers/event.controller"
 import {getLocation, getLocations, postLocation} from "../controllers/location.controller";
 import * as express from "express"
@@ -12,7 +12,7 @@ router.post('/event', (req: Request, res: Response) => postEvent(req, res))
 
 
 //////////////////////////////////////////////////////////////////
-router.get('/users', (req: Request, res: Response) => getAllUsers(req,res))
+router.get('/users', (req: Request, res: Response) => getUsers(req,res))
 
 router.get('/user', (req: Request, res: Response) => getUser(req, res))
 
