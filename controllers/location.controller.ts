@@ -2,8 +2,7 @@ import {Request, Response} from "express";
 import {db} from "../databases/loopz.database";
 import {ILocation} from "../models/location.model";
 import * as path from "path";
-
-const fs = require('fs')
+import * as fs from "fs";
 
 export  const getLocations = (req: Request, res: Response) => {
     try {
@@ -29,36 +28,27 @@ export  const getLocations = (req: Request, res: Response) => {
 
 }
 
-export const getLocationWithId = (req: Request, res: Response) => {
-    try{
-        const query = fs.readFileSync(path.join(__dirname,'../queries/getLocationWithId.query.sql')).toString()
-        console.log(req.query)
-        const { id } = req.query
-        db.query(query,id, (err: Error, result:ILocation) => {
-            if (err) {
-                console.error(err)
-                res.status(400).json({ error: `Internal Server Error: ${err}` })
-            }
-
-            if (!result) {
-                console.log('result was passed')
-                res.status(500).json({ error: 'result was passed' })
-            }
-
-            res.status(200).json(result)
-        })
-    } catch (err) {
-        console.error(err)
-        res.status(400).json({error : `Having trouble reading the sql file. ${err}`})
-    }
-}
-
-export const getLocationWithName = (req: Request, res: Response) => {
+export const getLocation = (req: Request, res: Response) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname,"../queries/getLocationWithName.query.sql")).toString()
-        const { name } = req.query
+        const { id, name } = req.query
+        let query: string = ""
+        let values: (typeof id | typeof name)[] = []
 
-        db.query(query, name, (err: Error, result: ILocation) => {
+        if (!id && !name) {
+            return res.status(400).json({ error: 'name or id parameter is required' })
+        }
+
+        if (name) {
+            query = fs.readFileSync(path.join(__dirname,"../queries/getEventWithName.query.sql")).toString()
+            values = [name]
+        }
+
+        if (id) {
+            query = fs.readFileSync(path.join(__dirname,"../queries/getEventWithId.query.sql")).toString()
+            values = [id]
+        }
+
+        db.query(query, values, (err: Error, result: ILocation) => {
             if (err) {
                 console.error(err)
                 res.status(400).json({ error: `Internal Server Error: ${err}` })
