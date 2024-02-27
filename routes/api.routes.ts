@@ -6,6 +6,10 @@ import * as express from "express"
 
 
 const router = express.Router()
+
+router.use('/', (req: Request, res: Response) => {
+    res.status(200).json({message:"its working"})
+})
 router.get('/events', (req: Request, res: Response) => getEvents(req,res))
 router.get('/event',(req: Request, res: Response) => getEvent(req, res))
 router.post('/event', (req: Request, res: Response) => postEvent(req, res))
