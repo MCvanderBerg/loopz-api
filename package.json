@@ -4,7 +4,7 @@
   "description": "This is the api for the app loopz. ",
   "main": "app.ts",
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "api-dev": "nodemon app.ts dev",
     "api-qa": "nodemon app.ts qa",
     "api-stag": "nodemon app.ts stag",
