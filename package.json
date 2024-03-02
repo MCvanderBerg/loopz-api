@@ -9,7 +9,7 @@
     "api-qa": "nodemon app.ts qa",
     "api-stag": "nodemon app.ts stag",
     "api-prod": "nodemon app.ts prod",
-    "start": "nodemon app.ts dev"
+    "start": "node app.ts dev"
   },
   "repository": {
     "type": "git",
