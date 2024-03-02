@@ -27,7 +27,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use('/', (req: any, res: any) => {
+app.use('/', (req, res) => {
     res.status(200).json({ message: 'Hello, World!' });
 });
 
