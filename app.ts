@@ -19,15 +19,15 @@
 //     res.status(200).json({message:"its working"})
 // })
 
-import {Request, Response} from "express";
+// import {Request, Response} from "express";
 
 
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use('/', (req: Request, res: Response) => {
-    res.status(200).json({ message: 'Hello, World! with request and response' });
+app.use('/', (req, res) => {
+    res.status(200).json({ message: 'Hello, World! with request and response 3' });
 });
 
 
