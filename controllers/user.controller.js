@@ -1,14 +1,12 @@
-import {IUser, User} from "../models/user.model";
-import {db} from "../databases/loopz.database";
-import { Request, Response } from "express";
-import * as fs from "fs";
-import {IEvent} from "../models/event.model";
-import * as path from "path";
+import { User } from "../models/user.model.js";
+import {db} from "../databases/loopz.database.js";
+import fs from "fs";
+import path from "path";
 
-export const getUsers = (req: Request, res: Response) => {
-    const query = fs.readFileSync(path.join(__dirname,"../queries/getUsers.query.sql")).toString()
+export const getUsers = (req, res) => {
+    const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()
 
-    db.query(query, (err: Error, results: IUser[] | undefined) => {
+    db.query(query, (err, results) => {
         if (err) {
             console.log(err)
             throw err
@@ -22,26 +20,26 @@ export const getUsers = (req: Request, res: Response) => {
     }
 )}
 
-export const getUser = (req: Request, res: Response) => {
+export const getUser = (req, res) => {
     const { id, username } = req.query
-    let query: string = ""
-    let values: (typeof id | typeof username)[] = []
+    let query = ""
+    let values = []
 
     if (!id && !username) {
         return res.status(400).json({ error: 'username or id parameter is required' })
     }
 
     if (username) {
-        query = fs.readFileSync(path.join(__dirname,"../queries/getUserWithUsername.query.sql")).toString()
+        query = fs.readFileSync(path.join(__dirname,"./queries/getUserWithUsername.query.sql")).toString()
         values = [username]
     }
 
     if (id) {
-        query = fs.readFileSync(path.join(__dirname,"../queries/getUserWithId.query.sql")).toString()
+        query = fs.readFileSync(path.join(__dirname,"./queries/getUserWithId.query.sql")).toString()
         values = [id]
     }
 
-    db.query(query,values, (err: Error, result: IUser | undefined) => {
+    db.query(query,values, (err, result) => {
         if (err) {
             console.log(err)
             return res.status(500).json({error: 'Internal Server Error'})
@@ -50,8 +48,8 @@ export const getUser = (req: Request, res: Response) => {
     })
 }
 
-export const postUser = (req: Request, res: Response) => {
-    const query = fs.readFileSync(path.join(__dirname, "../queries/postUser.query.sql")).toString()
+export const postUser = (req, res) => {
+    const query = fs.readFileSync(path.join(__dirname, "./queries/postUser.query.sql")).toString()
 
     const [isValid, prop] = User.validateAsUser(req.body)
 
@@ -66,11 +64,11 @@ export const postUser = (req: Request, res: Response) => {
         surname,
         phone_number,
         email_address
-    }: IUser = req.body
+    } = req.body
 
     const values = [username, password, name, surname, phone_number, email_address]
 
-    db.query(query, values,(err: Error, result: IUser) => {
+    db.query(query, values,(err, result) => {
         if (err){
             console.error(err)
             return res.status(400).json({ error: `Internal Error: ${err}` })

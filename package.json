@@ -2,14 +2,15 @@
   "name": "loopz-api",
   "version": "1.0.0",
   "description": "This is the api for the app loopz. ",
-  "main": "app.ts",
+  "main": "app.js",
+  "type": "module",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "api-dev": "nodemon app.ts dev",
-    "api-qa": "nodemon app.ts qa",
-    "api-stag": "nodemon app.ts stag",
-    "api-prod": "nodemon app.ts prod",
-    "start": "node app.ts"
+    "api-dev": "nodemon app.js dev",
+    "api-qa": "nodemon app.js qa",
+    "api-stag": "nodemon app.js stag",
+    "api-prod": "nodemon app.js prod",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",

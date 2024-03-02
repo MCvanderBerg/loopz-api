@@ -1,11 +1,9 @@
-import setupConfig from "../config/app.conf";
-import * as path from "path";
-const mysql = require('mysql');
-const fs = require("fs")
+import setupConfig from "../config/app.conf.js";
+import * as path from "path"
+import mysql from 'mysql'
+import * as fs from "fs"
 
 const Config = setupConfig()
-
-
 
 export const db = mysql.createConnection({
     host:  Config.db_host,
@@ -18,10 +16,7 @@ export const db = mysql.createConnection({
     })
 
 
-    // /app/work/ca.pem
-
-
-db.connect((err: Error) => {
+db.connect((err) => {
     if (err) {
         console.log(err)
         throw err;

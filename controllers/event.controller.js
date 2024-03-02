@@ -1,15 +1,16 @@
-import {db} from "../databases/loopz.database";
-import {Event, IEvent} from "../models/event.model";
-import {query, Request, Response} from "express";
-import * as fs from "fs";
-import * as path from "path";
+import {db} from "../databases/loopz.database.js";
+import {Event} from "../models/event.model.js";
+import {__dirname} from "../base_utils.js";
+
+import fs from "fs";
+import path from "path";
 
 
-export const getEvents = (req: Request, res: Response) => {
+export const getEvents = (req, res) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname,"../queries/getEvents.query.sql"),).toString()
+        const query = fs.readFileSync(path.join(__dirname,"./queries/getEvents.query.sql"),).toString()
 
-        db.query(query,(err: Error,result: IEvent[] | undefined) => {
+        db.query(query,(err,result) => {
             if (err){
                 console.log(err)
                 return res.status(500).json({ error: "Internal Server Error" })
@@ -27,27 +28,27 @@ export const getEvents = (req: Request, res: Response) => {
     }
 }
 
-export const getEvent = (req: Request, res: Response) => {
+export const getEvent = (req , res) => {
     try {
         const { id, name } = req.query
-        let query: string = ""
-        let values: (typeof id | typeof name)[] = []
+        let query = ""
+        let values = []
 
         if (!id && !name) {
             return res.status(400).json({ error: 'name or id parameter is required' })
         }
 
         if (name) {
-            query = fs.readFileSync(path.join(__dirname,"../queries/getEventWithName.query.sql")).toString()
+            query = fs.readFileSync(path.join(__dirname,"./queries/getEventWithName.query.sql")).toString()
             values = [name]
         }
 
         if (id) {
-            query = fs.readFileSync(path.join(__dirname,"../queries/getEventWithId.query.sql")).toString()
+            query = fs.readFileSync(path.join(__dirname,"./queries/getEventWithId.query.sql")).toString()
             values = [id]
         }
 
-        db.query(query,values, (err: Error, result: IEvent) => {
+        db.query(query,values, (err, result) => {
             if (err){
                 return res.status(500).json({ error: "Internal Server Error" })
             }
@@ -64,4 +65,4 @@ export const getEvent = (req: Request, res: Response) => {
     }
 }
 
-export const postEvent = (req: Request, res: Response) => {}
+ export const postEvent = (req, res) => {}

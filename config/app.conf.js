@@ -1,15 +1,16 @@
-import {IConfig} from "../types";
+import dotenv from "dotenv"
 
-
-export default function setupConfig():IConfig {
+export default function setupConfig() {
     const args = process.argv.slice(2);
+    let envFile = `.env.${args[0]}`;
+
     if (args.length !== 1) {
         console.error("Usage: node app.js <environment>");
-        process.exit(1);
+        console.error("Defaulting to dev");
+        envFile = "dev"
     }
 
-    const envFile = `.env.${args[0]}`;
-    require('dotenv').config({ path: envFile });
+    dotenv.config({ path: envFile });
 
     return {
         db_host: process.env.DB_HOST,
