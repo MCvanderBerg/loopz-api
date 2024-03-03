@@ -1,2 +1,2 @@
 SELECT * FROM locations
-WHERE name = ?
+WHERE locations.name = ?

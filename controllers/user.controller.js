@@ -2,6 +2,8 @@ import { User } from "../models/user.model.js";
 import {db} from "../databases/loopz.database.js";
 import fs from "fs";
 import path from "path";
+import {__dirname} from "../base_utils.js";
+
 
 export const getUsers = (req, res) => {
     const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()

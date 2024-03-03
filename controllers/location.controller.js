@@ -1,6 +1,8 @@
 import {db} from "../databases/loopz.database.js";
-import * as path from "path";
-import * as fs from "fs";
+import path from "path";
+import fs from "fs";
+import {__dirname} from "../base_utils.js";
+
 
 export  const getLocations = (req, res) => {
     try {
@@ -31,18 +33,18 @@ export const getLocation = (req, res) => {
         const { id, name } = req.query
         let query = ""
         let values = []
-
+        console.log(name)
         if (!id && !name) {
             return res.status(400).json({ error: 'name or id parameter is required' })
         }
 
         if (name) {
-            query = fs.readFileSync(path.join(__dirname,"./queries/getEventWithName.query.sql")).toString()
+            query = fs.readFileSync(path.join(__dirname,"./queries/getLocationWithName.query.sql")).toString()
             values = [name]
         }
 
         if (id) {
-            query = fs.readFileSync(path.join(__dirname,"./queries/getEventWithId.query.sql")).toString()
+            query = fs.readFileSync(path.join(__dirname,"./queries/getLocationWithId.query.sql")).toString()
             values = [id]
         }
 
@@ -51,7 +53,7 @@ export const getLocation = (req, res) => {
                 console.error(err)
                 res.status(400).json({ error: `Internal Server Error: ${err}` })
             }
-
+            console.log(result)
             if (!result) {
                 console.log('result was passed')
                 res.status(500).json({ error: 'result was passed' })
