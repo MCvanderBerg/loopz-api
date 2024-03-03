@@ -12,11 +12,16 @@ export default function setupConfig() {
 
     dotenv.config({ path: envFile });
 
+
+    // DB_HOST=
+    // DB_USER=
+    // DB_PASSWORD=
+    // DB_PORT=3000
+    // DB_DATABASE=
     return {
-        db_host: process.env.DB_HOST,
-        db_user: process.env.DB_USER,
-        db_password: process.env.DB_PASSWORD,
-        db_database: process.env.DB_DATABASE,
-        db_port: process.env.DB_PORT
+        db_host: "loopz-api.mysql.database.azure.com",
+        db_user: "leech",
+        db_password: "Noeline101#Sebastiaan1",
+        db_database: "loopz_database_dev",
     };
 }
