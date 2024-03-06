@@ -4,6 +4,7 @@ INSERT INTO users(
     name,
     surname,
     phone_number,
-    email_address
+    email_address,
+    profilePicture
 )
-VALUES(?, ?, ?, ?, ?, ?)
+VALUES(?, ?, ?, ?, ?, ?, ?)

@@ -3,7 +3,7 @@ import {db} from "../databases/loopz.database.js";
 import fs from "fs";
 import path from "path";
 import {__dirname} from "../base_utils.js";
-import { handleImageUpload } from "../databases/azure.database.js";
+import { handleProfilePictureUpload } from "../databases/azure.database.js";
 
 
 export const getUsers = (req, res) => {
@@ -52,7 +52,7 @@ export const getUser = (req, res) => {
     })
 }
 
-export const postUser = (req, res) => {
+export const postUser = async (req, res) => {
     const query = fs.readFileSync(path.join(__dirname, "./queries/postUser.query.sql")).toString()
 
     const [isValid, prop] = User.validateAsUser(req.body)
@@ -69,8 +69,15 @@ export const postUser = (req, res) => {
         phone_number,
         email_address
     } = req.body
+    let imageUrl
+    try {
+        imageUrl = await handleProfilePictureUpload(req, res)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Struggeling to upload profile picture" })
+    }
 
-    const values = [username, password, name, surname, phone_number, email_address]
+    const values = [username, password, name, surname, phone_number, email_address, imageUrl]
 
     db.query(query, values,(err, result) => {
         if (err){
@@ -84,7 +91,7 @@ export const postUser = (req, res) => {
 
 const postProfilePicture = async (req, res) => {
 
-    const url = await handleImageUpload(req)
+    const url = await handleProfilePictureUpload(req, res)
 
     const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()
 

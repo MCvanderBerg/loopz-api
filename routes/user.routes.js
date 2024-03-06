@@ -8,7 +8,7 @@ router.get('/users', (req, res) => getUsers(req,res))
 
 router.get('/', (req, res) => getUser(req, res))
 
-router.post('/', (req, res) => postUser(req, res))
+router.post('/', async (req, res) => await postUser(req, res))
 
 
 //TODO

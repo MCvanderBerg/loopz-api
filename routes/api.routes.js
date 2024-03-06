@@ -3,7 +3,6 @@ import userRoutes from "./user.routes.js";
 import locationRoutes from "./location.routes.js"
 import watcherRoutes from "./watcher.routes.js"
 import express from "express"
-import {handleImageUpload} from "../databases/azure.database.js";
 
 const router = express.Router()
 
@@ -15,7 +14,5 @@ router.use("/event",eventRoutes)
 router.use("/user",userRoutes)
 router.use("/location", locationRoutes)
 router.use("/watcher", watcherRoutes)
-
-router.post("/image", async (req, res) => await handleImageUpload(req, res))
 
 export default router
