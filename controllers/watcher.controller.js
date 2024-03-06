@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { __dirname } from "../base_utils.js";
 
-export const getWathers = (req, res) => {
+export const getWatchers = (req, res) => {
     try {
         const query = fs.readFileSync(path.join(__dirname, "./queries/getWatchers.query.sql")).toString()
 

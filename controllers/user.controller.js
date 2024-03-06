@@ -3,22 +3,24 @@ import {db} from "../databases/loopz.database.js";
 import fs from "fs";
 import path from "path";
 import {__dirname} from "../base_utils.js";
+import { handleImageUpload } from "../databases/azure.database.js";
 
 
 export const getUsers = (req, res) => {
     const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()
 
-    db.query(query, (err, results) => {
+    db.query(query, (err, result) => {
         if (err) {
             console.log(err)
+            res.status(500).json({ error: `Internal Server Error: ${err}` })
             throw err
         }
 
-        if (!results) {
-            return console.log("results is empty")
+        if (!result) {
+            return console.log("result is empty")
         }
 
-        res.json(results)
+        res.status(200).json(result)
     }
 )}
 
@@ -79,5 +81,29 @@ export const postUser = (req, res) => {
         res.status(200).json(result)
     })
 }
+
+const postProfilePicture = async (req, res) => {
+
+    const url = await handleImageUpload(req)
+
+    const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()
+
+
+
+    db.query(query,[url],(err, result) => {
+        if (err) {
+            console.log(err)
+            res.status(500).json({ error: `Internal Server Error: ${err}` })
+            throw err
+        }
+
+        if (!result) {
+            return console.log("result is empty")
+        }
+
+        res.status(200).json(result)
+    })
+}
+
 
 

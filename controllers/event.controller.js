@@ -8,7 +8,7 @@ import path from "path";
 
 export const getEvents = (req, res) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname,"./queries/getEvents.query.sql"),).toString()
+        const query = fs.readFileSync(path.join(__dirname,"./queries/getEvents.query.sql")).toString()
 
         db.query(query,(err,result) => {
             if (err){

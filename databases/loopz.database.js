@@ -1,7 +1,5 @@
 import setupConfig from "../config/app.conf.js";
-import * as path from "path"
 import mysql from 'mysql'
-import * as fs from "fs"
 
 const Config = setupConfig()
 

@@ -1,5 +1,5 @@
 import express from "express";
-import {getEventWatchers, getWatcher, getWatchers, getUserWatchers} from "../controllers/ticket.controller.js";
+import {getEventWatchers, getWatcher, getWatchers, getUserWatchers} from "../controllers/watcher.controller.js";
 
 const router = express.Router()
 
