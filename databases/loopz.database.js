@@ -1,18 +1,15 @@
-import setupConfig from "../config/app.conf.js";
-import mysql from 'mysql'
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE } =  require("../config/app.conf.js");
+const mysql = require('mysql2')
 
-const Config = setupConfig()
-
-export const db = mysql.createConnection({
-    host:  Config.db_host,
-    user: Config.db_user,
-    password: Config.db_password,
-    database: Config.db_database,
+const db = mysql.createConnection({
+    host:  DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_DATABASE,
     // ssl: {
-    //     ca: fs.readFileSync(path.join(__dirname,"../BaltimoreCyberTrustRoot.crt.pem")) // Specify the path to your CA certificate file
+    //     ca: fs.readFileSync(path.join(__project_dirname,"../BaltimoreCyberTrustRoot.crt.pem")) // Specify the path to your CA certificate file
     // }
     })
-
 
 db.connect((err) => {
     if (err) {
@@ -21,3 +18,6 @@ db.connect((err) => {
     }
     console.log('Connected to Azure database')
 })
+
+
+module.exports = db

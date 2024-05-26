@@ -1,4 +1,4 @@
-export class Event {
+class Event {
     constructor(
         id,
         name,
@@ -21,3 +21,5 @@ export class Event {
         this.creator_id = creator_id
     }
 }
+
+module.exports = Event

@@ -1,12 +1,12 @@
-import { User } from "../models/user.model.js";
-import {db} from "../databases/loopz.database.js";
-import fs from "fs";
-import path from "path";
-import { __dirname } from "../base_utils.js";
+const { User }  = require("../models/user.model.js");
+const db = require("../databases/loopz.database.js");
+const fs  = require("fs");
+const path  = require("path");
+const { __project_dirname }  = require("../base_utils.js");
 
-export const getWatchers = (req, res) => {
+const getWatchers = (req, res) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname, "./queries/getWatchers.query.sql")).toString()
+        const query = fs.readFileSync(path.join(__project_dirname, "./queries/getWatchers.query.sql")).toString()
 
         db.query(query, (err, result) => {
             if (err) {
@@ -24,9 +24,10 @@ export const getWatchers = (req, res) => {
     catch (err) {
         console.error(err)
         return res.status(400).json({ error: `Having trouble reading the sql file. ${err}` })
-    }}
+    }
+}
 
-export const getWatcher = (req, res) => {
+const getWatcher = (req, res) => {
     try {
         const { user_id, event_id } = req.query
         let query = ""
@@ -41,7 +42,7 @@ export const getWatcher = (req, res) => {
         }
 
         if (user_id && event_id) {
-            query = fs.readFileSync(path.join(__dirname, "./queries/getWatchWithIds.query.sql")).toString()
+            query = fs.readFileSync(path.join(__project_dirname, "./queries/getWatchWithIds.query.sql")).toString()
             values = [user_id, event_id]
         }
 
@@ -64,10 +65,10 @@ export const getWatcher = (req, res) => {
     }
 }
 
-export const getUserWatchers = (req, res) => {
+const getUserWatchers = (req, res) => {
     try {
         const { user_id: id } = req.query
-        const query = fs.readFileSync(path.join(__dirname, "./queries/getUserWatchers.query.sql")).toString()
+        const query = fs.readFileSync(path.join(__project_dirname, "./queries/getUserWatchers.query.sql")).toString()
 
         db.query(query, [id], (err, result) => {
             if (err) {
@@ -87,10 +88,10 @@ export const getUserWatchers = (req, res) => {
     }
 }
 
-export const getEventWatchers = (req, res) => {
+const getEventWatchers = (req, res) => {
     try {
         const { event_id: id } = req.query
-        const query = fs.readFileSync(path.join(__dirname, "./queries/getEventWatchers.query.sql")).toString()
+        const query = fs.readFileSync(path.join(__project_dirname, "./queries/getEventWatchers.query.sql")).toString()
 
         db.query(query, [id], (err, result) => {
             if (err) {
@@ -110,8 +111,9 @@ export const getEventWatchers = (req, res) => {
     }
 }
 
-
-export const postWatch = (req, res) => {
+const postWatch = (req, res) => {
 
 }
+
+module.exports = { getWatchers, getWatcher, getUserWatchers, getEventWatchers, postWatch }
 

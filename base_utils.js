@@ -1,12 +1,12 @@
-import path from 'path';
-import fs from "fs";
-import {db} from "./databases/loopz.database.js";
+const path  = require('path');
+const fs  = require("fs");
+const db = require("./databases/loopz.database.js");
 
-export const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __project_dirname = path.dirname(__dirname);
 
-export const getAll = (req, res, sqlFilePath) => {
+const getAll = (req, res, sqlFilePath) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname, sqlFilePath)).toString()
+        const query = fs.readFileSync(path.join(__project_dirname, sqlFilePath)).toString()
 
         db.query(query, (err, result) => {
             if (err) {
@@ -27,7 +27,9 @@ export const getAll = (req, res, sqlFilePath) => {
     }
 }
 
-export const getOne = (req, res, sqlName, sqlId) => {
+const getOne = (req, res, sqlName, sqlId) => {
 
 }
 
+
+module.exports = { __project_dirname, getAll, getOne }

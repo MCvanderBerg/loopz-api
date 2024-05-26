@@ -1,14 +1,13 @@
-import {db} from "../databases/loopz.database.js";
-import {Event} from "../models/event.model.js";
-import {__dirname} from "../base_utils.js";
+const db = require("../databases/loopz.database.js");
+const {Event}  = require( "../models/event.model.js");
+const {__project_dirname}  = require( "../base_utils.js");
+const fs = require( "fs");
+const path = require( "path");
 
-import fs from "fs";
-import path from "path";
 
-
-export const getEvents = (req, res) => {
+const getEvents = (req, res) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname,"./queries/getEvents.query.sql")).toString()
+        const query = fs.readFileSync(path.join(__project_dirname,"./queries/getEvents.query.sql")).toString()
 
         db.query(query,(err,result) => {
             if (err){
@@ -17,7 +16,7 @@ export const getEvents = (req, res) => {
             }
 
             if (!result) {
-                return  res.status(500).json({ error: "Result from query was empty"})
+                return  res.status(500).json({ error: "Result  = require( query was empty"})
             }
 
             res.status(200).json(result)
@@ -28,7 +27,7 @@ export const getEvents = (req, res) => {
     }
 }
 
-export const getEvent = (req , res) => {
+const getEvent = (req , res) => {
     try {
         const { id, name } = req.query
         let query = ""
@@ -39,12 +38,12 @@ export const getEvent = (req , res) => {
         }
 
         if (name) {
-            query = fs.readFileSync(path.join(__dirname,"./queries/getEventWithName.query.sql")).toString()
+            query = fs.readFileSync(path.join(__project_dirname,"./queries/getEventWithName.query.sql")).toString()
             values = [name]
         }
 
         if (id) {
-            query = fs.readFileSync(path.join(__dirname,"./queries/getEventWithId.query.sql")).toString()
+            query = fs.readFileSync(path.join(__project_dirname,"./queries/getEventWithId.query.sql")).toString()
             values = [id]
         }
 
@@ -65,7 +64,7 @@ export const getEvent = (req , res) => {
     }
 }
 
- export const postEvent = (req, res) => {
+const postEvent = (req, res) => {
     try {
         const {
             name,
@@ -78,7 +77,7 @@ export const getEvent = (req , res) => {
             creator_id
         } = req.body
 
-        const query = fs.readFileSync(path.join(__dirname,"./queries/postEvent.query.sql")).toString()
+        const query = fs.readFileSync(path.join(__project_dirname,"./queries/postEvent.query.sql")).toString()
         const values = [ name, description, date, location_id, created_at, phone_number, email_address, creator_id]
 
         db.query(query, values,(err, result) => {
@@ -98,3 +97,6 @@ export const getEvent = (req , res) => {
     }
 
  }
+
+
+module.exports = { getEvents, getEvent, postEvent }

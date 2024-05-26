@@ -1,13 +1,19 @@
-import { User } from "../models/user.model.js";
-import {db} from "../databases/loopz.database.js";
-import fs from "fs";
-import path from "path";
-import {__dirname} from "../base_utils.js";
-import { handleProfilePictureUpload } from "../databases/azure.database.js";
+const User  = require( "../models/user.model.js");
+const db = require("../databases/loopz.database.js");
+const fs  = require("fs");
+const path  = require("path");
+const {__project_dirname}  = require("../base_utils.js");
+const { handleProfilePictureUpload }  = require("../databases/azure.database.js");
+const jwt = require('jsonwebtoken')
+const { SECRET } = require('../config/app.conf.js');
+const { error } = require("console");
 
+const createToken = (id) => {
+    return jwt.sign({id},SECRET , {expiresIn: '3d'})
+}
 
-export const getUsers = (req, res) => {
-    const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()
+const getUsers = (req, res) => {
+    const query = fs.readFileSync(path.join(__project_dirname,"./queries/getUsers.query.sql")).toString()
 
     db.query(query, (err, result) => {
         if (err) {
@@ -24,7 +30,7 @@ export const getUsers = (req, res) => {
     }
 )}
 
-export const getUser = (req, res) => {
+const getUser = (req, res) => {
     const { id, username } = req.query
     let query = ""
     let values = []
@@ -34,12 +40,12 @@ export const getUser = (req, res) => {
     }
 
     if (username) {
-        query = fs.readFileSync(path.join(__dirname,"./queries/getUserWithUsername.query.sql")).toString()
+        query = fs.readFileSync(path.join(__project_dirname,"./queries/getUserWithUsername.query.sql")).toString()
         values = [username]
     }
 
     if (id) {
-        query = fs.readFileSync(path.join(__dirname,"./queries/getUserWithId.query.sql")).toString()
+        query = fs.readFileSync(path.join(__project_dirname,"./queries/getUserWithId.query.sql")).toString()
         values = [id]
     }
 
@@ -52,48 +58,39 @@ export const getUser = (req, res) => {
     })
 }
 
-export const postUser = async (req, res) => {
-    const query = fs.readFileSync(path.join(__dirname, "./queries/postUser.query.sql")).toString()
+const signup = async (req, res) => {
+    const { username, password, name, surname, phone_number, email_address } = req.body
 
-    const [isValid, prop] = User.validateAsUser(req.body)
+    try{
+        const user = await User.signup(username, password, name, surname, phone_number, email_address)
+        console.log('user: ', user)
+        const token = createToken(id)
 
-    if(!isValid){
-        return res.status(500).json({ error: `missing fields ${prop}` })
+        res.status(200).json({ user, token })
+    } catch(err){
+        res.status(400).json({ error: err.message })
     }
+}
 
-    const {
-        username,
-        password,
-        name,
-        surname,
-        phone_number,
-        email_address
-    } = req.body
-    let imageUrl
+const login = async (req, res) => {
+    const  { email_address, password } = req.body
+
+    console.log(email_address, password)
     try {
-        imageUrl = await handleProfilePictureUpload(req, res)
-    } catch (err) {
-        console.error(err)
-        res.status(500).json({ error: "Struggeling to upload profile picture" })
+        const user = await User.login(email_address, password)
+        const token = createToken(user.id)
+
+        res.status(200).json({ user, token })
+    } catch(err) {
+        res.status(400).json({ error: err.message })
     }
-
-    const values = [username, password, name, surname, phone_number, email_address, imageUrl]
-
-    db.query(query, values,(err, result) => {
-        if (err){
-            console.error(err)
-            return res.status(400).json({ error: `Internal Error: ${err}` })
-        }
-
-        res.status(200).json(result)
-    })
 }
 
 const postProfilePicture = async (req, res) => {
 
     const url = await handleProfilePictureUpload(req, res)
 
-    const query = fs.readFileSync(path.join(__dirname,"./queries/getUsers.query.sql")).toString()
+    const query = fs.readFileSync(path.join(__project_dirname,"./queries/getUsers.query.sql")).toString()
 
 
 
@@ -111,6 +108,8 @@ const postProfilePicture = async (req, res) => {
         res.status(200).json(result)
     })
 }
+
+module.exports = { getUsers, getUser, signup, login, postProfilePicture }
 
 
 

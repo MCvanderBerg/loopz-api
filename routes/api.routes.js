@@ -1,8 +1,8 @@
-import eventRoutes from "./event.routes.js"
-import userRoutes from "./user.routes.js";
-import locationRoutes from "./location.routes.js"
-import watcherRoutes from "./watcher.routes.js"
-import express from "express"
+const eventRoutes = require("./event.routes.js")
+const userRoutes = require("./user.routes.js")
+const locationRoutes = require("./location.routes.js")
+const watcherRoutes = require("./watcher.routes.js")
+const express = require("express")
 
 const router = express.Router()
 
@@ -15,4 +15,4 @@ router.use("/user",userRoutes)
 router.use("/location", locationRoutes)
 router.use("/watcher", watcherRoutes)
 
-export default router
+module.exports = router

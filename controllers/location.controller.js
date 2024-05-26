@@ -1,12 +1,12 @@
-import {db} from "../databases/loopz.database.js";
-import path from "path";
-import fs from "fs";
-import {__dirname} from "../base_utils.js";
+const db = require("../databases/loopz.database.js");
+const path  = require( "path");
+const fs  = require( "fs");
+const { __project_dirname }  = require( "../base_utils.js");
 
 
-export  const getLocations = (req, res) => {
+const getLocations = (req, res) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname,'./queries/getLocations.query.sql')).toString()
+        const query = fs.readFileSync(path.join(__project_dirname,'./queries/getLocations.query.sql')).toString()
 
         db.query(query, (err, result) => {
             if (err) {
@@ -28,7 +28,7 @@ export  const getLocations = (req, res) => {
 
 }
 
-export const getLocation = (req, res) => {
+const getLocation = (req, res) => {
     try {
         const { id, name } = req.query
         let query = ""
@@ -39,12 +39,12 @@ export const getLocation = (req, res) => {
         }
 
         if (name) {
-            query = fs.readFileSync(path.join(__dirname,"./queries/getLocationWithName.query.sql")).toString()
+            query = fs.readFileSync(path.join(__project_dirname,"./queries/getLocationWithName.query.sql")).toString()
             values = [name]
         }
 
         if (id) {
-            query = fs.readFileSync(path.join(__dirname,"./queries/getLocationWithId.query.sql")).toString()
+            query = fs.readFileSync(path.join(__project_dirname,"./queries/getLocationWithId.query.sql")).toString()
             values = [id]
         }
 
@@ -67,9 +67,9 @@ export const getLocation = (req, res) => {
     }
 }
 
-export const postLocation = (req, res) => {
+const postLocation = (req, res) => {
     try {
-        const query = fs.readFileSync(path.join(__dirname,"./queries/postLocation.query.sql")).toString()
+        const query = fs.readFileSync(path.join(__project_dirname,"./queries/postLocation.query.sql")).toString()
         const {
             latitude,
             longitude,
@@ -95,3 +95,5 @@ export const postLocation = (req, res) => {
         res.status(400).json({ error:  `Having trouble reading the sql file. ${err}` })
     }
 }
+
+module.exports = { getLocations, getLocation, postLocation }
