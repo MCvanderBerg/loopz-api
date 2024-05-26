@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 
 class User {
     constructor(
-        id,
         username,
         password,
         name,
@@ -12,7 +11,6 @@ class User {
         phone_number,
         email_address,
     ) {
-        this.id = id
         this.username = username
         this.password= password
         this.name = name
@@ -63,9 +61,9 @@ class User {
             const query = `INSERT INTO users(username, password, name, surname, phone_number, email_address) VALUES(?, ?, ?, ?, ?, ?)`
             const values = [username, hash, name, surname, phone_number, email_address]
             console.log(query, values)
-            const [results] = await db.promise().query(query, values)
-            return results
-                        
+            // await db.promise().query(query, values)
+
+            return values
         } catch (err) {
             console.log('here!!!!!!!!!!!!!!!!!!!!!')
             throw Error(err.message)
