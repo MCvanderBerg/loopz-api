@@ -61,7 +61,7 @@ class User {
             const query = `INSERT INTO users(username, password, name, surname, phone_number, email_address) VALUES(?, ?, ?, ?, ?, ?)`
             const values = [username, hash, name, surname, phone_number, email_address]
             console.log(query, values)
-            // await db.promise().query(query, values)
+            await db.promise().query(query, values)
 
             return values
         } catch (err) {

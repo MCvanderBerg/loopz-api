@@ -111,7 +111,24 @@ const postProfilePicture = async (req, res) => {
     })
 }
 
-module.exports = { getUsers, getUser, signup, login, postProfilePicture }
+const postUpdateInfo = async (req, res) => {
+    console.log(req.body)
+    const result = await db.promise.query(query,values)
+
+    if (err) {
+        console.log(err)
+        res.status(500).json({ error: `Internal Server Error: ${err}` })
+        throw err
+    }
+
+    if (!result) {
+        return console.log("result is empty")
+    }
+
+    res.status(200).json(result)
+}
+
+module.exports = { getUsers, getUser, signup, login, postProfilePicture, postUpdateInfo }
 
 
 
