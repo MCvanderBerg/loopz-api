@@ -9,7 +9,7 @@ const upload = multer();
 app.use(express.json());
 app.use(upload.any())
 
-app.use('/api', apiRoutes)
+app.use('/', apiRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

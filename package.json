@@ -10,7 +10,7 @@
     "api-qa": "nodemon app.js qa",
     "api-stag": "nodemon app.js stag",
     "api-prod": "nodemon app.js prod",
-    "start": "node app.js"
+    "start": "node app.js dev"
   },
   "repository": {
     "type": "git",
