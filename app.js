@@ -11,7 +11,7 @@ app.use(upload.any())
 
 app.use('/', apiRoutes)
 
-app.listen(PORT, () => {
+app.listen(PORT || 8080, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
