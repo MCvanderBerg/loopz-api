@@ -10,9 +10,9 @@ router.get('/', (req, res) => {
     res.status(200).json({message:"loopz api entry point"})
 })
 
-// router.use("/event",eventRoutes)
-// router.use("/user",userRoutes)
-// router.use("/location", locationRoutes)
-// router.use("/watcher", watcherRoutes)
+router.use("/event",eventRoutes)
+router.use("/user",userRoutes)
+router.use("/location", locationRoutes)
+router.use("/watcher", watcherRoutes)
 
 module.exports = router
