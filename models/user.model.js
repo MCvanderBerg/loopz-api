@@ -84,7 +84,6 @@ class User {
         throw Error("Incorrect email")
        }
 
-       console.log('here w')
        const match = await bcrypt.compare(password, user.password)
 
 
