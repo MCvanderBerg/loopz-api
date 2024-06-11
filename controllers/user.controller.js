@@ -40,12 +40,12 @@ const getUser = (req, res) => {
     }
 
     if (username) {
-        query = fs.readFileSync(path.join(__project_dirname,"./queries/getUserWithUsername.query.sql")).toString()
+        query = fs.readFileSync(path.join(__dirname,"../queries/getUserWithUsername.query.sql")).toString()
         values = [username]
     }
 
     if (id) {
-        query = fs.readFileSync(path.join(__project_dirname,"./queries/getUserWithId.query.sql")).toString()
+        query = fs.readFileSync(path.join(__dirname,"../queries/getUserWithId.query.sql")).toString()
         values = [id]
     }
 
@@ -56,6 +56,33 @@ const getUser = (req, res) => {
         }
         res.status(200).json(result)
     })
+}
+
+const patchUser = async (req, res) => {
+    // const { username, password, name, surname, phone_number, email_address, id } = req.body
+    const { name, id } = req.body
+
+    if (!name) {
+        res.status(400).json({ error: "no name provided" })
+    }
+
+    if (!id) {
+        res.status(400).json({ error: "no id provided" })
+    }
+
+    try{
+        const query = fs.readFileSync(path.join(__project_dirname,"./queries/postUser.query.sql")).toString()
+        values = [name, id]
+        db.query(query,values, (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).json({error: 'Internal Server Error'})
+            }
+            res.status(200).json(result)
+        })
+    } catch(err) {
+        res.status(400).json({ error: err.message })
+    }
 }
 
 const signup = async (req, res) => {
@@ -70,7 +97,7 @@ const signup = async (req, res) => {
 
         res.status(200).json({ user, token })
     } catch(err){
-        res.status(400).json({ error: err.message, message: "this error" })
+        res.status(400).json({ error: err.message})
     }
 }
 
@@ -94,8 +121,6 @@ const postProfilePicture = async (req, res) => {
 
     const query = fs.readFileSync(path.join(__project_dirname,"./queries/getUsers.query.sql")).toString()
 
-
-
     db.query(query,[url],(err, result) => {
         if (err) {
             console.log(err)
@@ -111,24 +136,8 @@ const postProfilePicture = async (req, res) => {
     })
 }
 
-const postUpdateInfo = async (req, res) => {
-    console.log(req.body)
-    const result = await db.promise.query(query,values)
 
-    if (err) {
-        console.log(err)
-        res.status(500).json({ error: `Internal Server Error: ${err}` })
-        throw err
-    }
-
-    if (!result) {
-        return console.log("result is empty")
-    }
-
-    res.status(200).json(result)
-}
-
-module.exports = { getUsers, getUser, signup, login, postProfilePicture, postUpdateInfo }
+module.exports = { getUsers, getUser, signup, login, postProfilePicture, patchUser }
 
 
 

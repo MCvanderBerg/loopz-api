@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user.model')
 const { SECRET } = require('../config/app.conf')
+const db = require('../databases/loopz.database')
 
 const requireAuth = async (req, res, next) => {
     const { authorization } = req.headers
@@ -14,10 +15,21 @@ const requireAuth = async (req, res, next) => {
     try {
         const { id } = jwt.verify(token, SECRET)
         const query = `SELECT * FROM users WHERE id=?`
-        const [[result]] = db.query(query,[id])
-        req.user = result
 
-        next()
+        db.query(query,[id], (err, result) => {
+            if (err) {
+                console.log(err)
+                res.status(500).json({ error: `Internal Server Error: ${err}` })
+            }
+    
+            if (!result) {
+                return console.log("result is empty")
+            }
+    
+            res.user = result
+            next()
+        })
+
     } catch (err) {
         console.log(err)
         res.status(401).json({ error: 'Request is not authorized' })
